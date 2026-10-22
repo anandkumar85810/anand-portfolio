@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071713"/>
+      <stop offset="60%" stop-color="#0b241e"/>
+      <stop offset="100%" stop-color="#050e0c"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10251f" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#071713" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="30" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#bgGrad)"/>
+  <circle cx="720" cy="70" r="160" fill="#f59e0b" opacity="0.14" filter="url(#glow)"/>
+  <circle cx="80" cy="440" r="140" fill="#2dd4bf" opacity="0.1" filter="url(#glow)"/>
+
+  <!-- Subtle Architecture Grid -->
+  <g stroke="#1d4d3e" stroke-width="0.5" opacity="0.3">
+    <line x1="0" y1="50" x2="800" y2="50"/><line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="150" x2="800" y2="150"/><line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="250" x2="800" y2="250"/><line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="350" x2="800" y2="350"/><line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="100" y1="0" x2="100" y2="500"/><line x1="200" y1="0" x2="200" y2="500"/>
+    <line x1="300" y1="0" x2="300" y2="500"/><line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="500" y1="0" x2="500" y2="500"/><line x1="600" y1="0" x2="600" y2="500"/>
+    <line x1="700" y1="0" x2="700" y2="500"/>
+  </g>
+
+  <!-- Main Container Card -->
+  <rect x="40" y="40" width="720" height="420" rx="14" fill="url(#cardGrad)" stroke="#1d4d3e" stroke-width="1.2"/>
+
+  <!-- Code Window Title Bar -->
+  <rect x="40" y="40" width="720" height="42" rx="14" fill="#10251f" stroke="#1d4d3e" stroke-width="1"/>
+  <rect x="40" y="65" width="720" height="17" fill="#10251f"/>
+  <circle cx="68" cy="61" r="5.5" fill="#ef4444"/>
+  <circle cx="88" cy="61" r="5.5" fill="#f59e0b"/>
+  <circle cx="108" cy="61" r="5.5" fill="#22c55e"/>
+  <text x="400" y="66" fill="#5eead4" font-family="monospace" font-size="12" text-anchor="middle">ProductController.php &mdash; Spring Boot Backend</text>
+
+  <!-- Schematic Side Panel -->
+  <rect x="68" y="105" width="220" height="330" rx="10" fill="#071713" stroke="#1d4d3e" stroke-width="1"/>
+  <rect x="88" y="125" width="180" height="36" rx="6" fill="#10251f" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="178" y="148" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">&lt;REST API /&gt;</text>
+  
+  <!-- Flow lines -->
+  <line x1="178" y1="161" x2="178" y2="185" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3"/>
+  
+  <rect x="88" y="185" width="180" height="36" rx="6" fill="#10251f" stroke="#2dd4bf" stroke-width="1.2"/>
+  <text x="178" y="208" fill="#2dd4bf" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">Service Layer</text>
+
+  <line x1="178" y1="221" x2="178" y2="245" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="3,3"/>
+
+  <rect x="88" y="245" width="180" height="36" rx="6" fill="#10251f" stroke="#22c55e" stroke-width="1.2"/>
+  <text x="178" y="268" fill="#86efac" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">JPA Repository</text>
+
+  <line x1="178" y1="281" x2="178" y2="305" stroke="#22c55e" stroke-width="2" stroke-dasharray="3,3"/>
+
+  <rect x="88" y="305" width="180" height="42" rx="6" fill="#10251f" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="178" y="331" fill="#fde68a" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">Database (MySQL)</text>
+
+  <text x="178" y="405" fill="#5eead4" font-family="monospace" font-size="11" text-anchor="middle">Status: Verified &amp; Clean</text>
+
+  <!-- Project Details Right Side -->
+  <text x="320" y="145" fill="#f0fdf4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="800">Shopora E-Commerce</text>
+  <text x="320" y="178" fill="#f59e0b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="600">Jewelry E-Commerce Web Application</text>
+
+  <!-- Architecture Bullets -->
+  <g fill="#ccfbf1" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14">
+    <circle cx="328" cy="225" r="3.5" fill="#f59e0b"/>
+    <text x="344" y="230">Controller-Service-Repository decoupled design</text>
+    
+    <circle cx="328" cy="260" r="3.5" fill="#f59e0b"/>
+    <text x="344" y="265">RESTful JSON endpoints with status code handling</text>
+    
+    <circle cx="328" cy="295" r="3.5" fill="#f59e0b"/>
+    <text x="344" y="300">Relational schema with indexing and validation</text>
+    
+    <circle cx="328" cy="330" r="3.5" fill="#f59e0b"/>
+    <text x="344" y="335">Clean exception handling and response entities</text>
+  </g>
+
+  <!-- Tech tags -->
+  
+    <rect x="320" y="380" width="100" height="34" rx="6" fill="#10251f" stroke="#1d4d3e" stroke-width="1.2"/>
+    <text x="370" y="402" fill="#99f6e4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" text-anchor="middle">PHP</text>
+    <rect x="430" y="380" width="100" height="34" rx="6" fill="#10251f" stroke="#1d4d3e" stroke-width="1.2"/>
+    <text x="480" y="402" fill="#99f6e4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Laravel</text>
+    <rect x="540" y="380" width="100" height="34" rx="6" fill="#10251f" stroke="#1d4d3e" stroke-width="1.2"/>
+    <text x="590" y="402" fill="#99f6e4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" text-anchor="middle">MySQL</text>
+    <rect x="650" y="380" width="100" height="34" rx="6" fill="#10251f" stroke="#1d4d3e" stroke-width="1.2"/>
+    <text x="700" y="402" fill="#99f6e4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Bootstrap</text>
+</svg>

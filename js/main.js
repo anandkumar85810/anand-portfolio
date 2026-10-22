@@ -4,20 +4,20 @@
  * - Theme Toggle (Dark/Light Mode with localStorage)
  * - Scroll Progress Indicator
  * - Floating Back to Top Button
- * - Typing Animation
+ * - Typing Animation (Backend & Spring Boot Focus)
  * - Navbar Behavior & Dynamic Footer Year
  * - Skills & Projects Initialization
  * - Contact Form Validation Initialization
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Initialize Dark / Light Mode Theme Engine (Phase 7)
+    // 1. Initialize Dark / Light Mode Theme Engine
     initThemeToggle();
 
-    // 2. Initialize Top Scroll Progress Bar (Phase 7)
+    // 2. Initialize Top Scroll Progress Bar
     initScrollProgress();
 
-    // 3. Initialize Floating Back to Top Button (Phase 7)
+    // 3. Initialize Floating Back to Top Button
     initBackToTop();
 
     // 4. Initialize Dynamic Year in Footer
@@ -29,29 +29,29 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6. Mobile Navbar Auto-Collapse on Link Click
     initMobileNavbarAutoClose();
 
-    // 7. Initialize Dynamic Skills Section (Phase 4)
+    // 7. Initialize Dynamic Skills Section
     if (typeof initSkillsSection === "function") {
         initSkillsSection();
     }
 
-    // 8. Initialize Dynamic Projects Section (Phase 5)
+    // 8. Initialize Dynamic Projects Section
     if (typeof initProjectsSection === "function") {
         initProjectsSection();
     }
 
-    // 9. Initialize Contact Form Validation (Phase 6)
+    // 9. Initialize Contact Form Validation
     if (typeof initContactForm === "function") {
         initContactForm();
     }
 
-    // 10. Initialize IntersectionObserver Scroll Reveal Animations (Phase 3 & 7)
+    // 10. Initialize IntersectionObserver Scroll Reveal Animations
     if (typeof initScrollAnimations === "function") {
         initScrollAnimations();
     }
 });
 
 /* ==========================================================================
-   1. DARK / LIGHT THEME TOGGLE ENGINE (PHASE 7)
+   1. DARK / LIGHT THEME TOGGLE ENGINE
    ========================================================================== */
 
 /**
@@ -95,13 +95,13 @@ function applyTheme(theme) {
         if (theme === "light") {
             themeIcon.className = "bi bi-sun-fill text-warning";
         } else {
-            themeIcon.className = "bi bi-moon-stars-fill text-info";
+            themeIcon.className = "bi bi-moon-stars-fill text-success";
         }
     }
 }
 
 /* ==========================================================================
-   2. TOP SCROLL PROGRESS BAR INDICATOR (PHASE 7)
+   2. TOP SCROLL PROGRESS BAR INDICATOR
    ========================================================================== */
 
 /**
@@ -112,22 +112,15 @@ function initScrollProgress() {
     if (!progressBar) return;
 
     window.addEventListener("scroll", () => {
-        // Amount scrolled from top
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-        // Total scrollable height = Total Page Height - Window Viewport Height
         const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-
-        // Calculate scroll percentage (0% to 100%)
         const scrollPercentage = totalHeight > 0 ? (scrollTop / totalHeight) * 100 : 0;
-
-        // Update progress bar width
         progressBar.style.width = `${scrollPercentage}%`;
     });
 }
 
 /* ==========================================================================
-   3. FLOATING BACK TO TOP BUTTON (PHASE 7)
+   3. FLOATING BACK TO TOP BUTTON
    ========================================================================== */
 
 /**
@@ -137,7 +130,6 @@ function initBackToTop() {
     const backToTopBtn = document.getElementById("back-to-top");
     if (!backToTopBtn) return;
 
-    // Show button when user scrolls down more than 300px
     window.addEventListener("scroll", () => {
         if (window.scrollY > 300) {
             backToTopBtn.classList.add("show");
@@ -146,7 +138,6 @@ function initBackToTop() {
         }
     });
 
-    // Smooth scroll to top when clicked
     backToTopBtn.addEventListener("click", () => {
         window.scrollTo({
             top: 0,
@@ -171,19 +162,20 @@ function initTypingAnimation() {
     if (!typingElement) return;
 
     const roles = [
-        "PHP Laravel Developer",
-        "Full Stack Developer",
-        "Java Spring Boot Developer"
+        "Java Spring Boot Developer",
+        "Backend REST API Engineer",
+        "Microservices & Database Specialist",
+        "Full Stack Developer"
     ];
 
     let roleIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
 
-    const typingSpeed = 100;
-    const deletingSpeed = 50;
+    const typingSpeed = 90;
+    const deletingSpeed = 45;
     const pauseBeforeDelete = 2000;
-    const pauseBeforeNextWord = 500;
+    const pauseBeforeNextWord = 450;
 
     function typeEffect() {
         const currentRole = roles[roleIndex];
@@ -230,7 +222,7 @@ function initMobileNavbarAutoClose() {
 }
 
 /* ==========================================================================
-   PHASE 4: DYNAMIC SKILLS RENDERING & FILTERING ENGINE
+   5. DYNAMIC SKILLS RENDERING & FILTERING ENGINE
    ========================================================================== */
 
 function initSkillsSection() {
@@ -264,7 +256,7 @@ function renderSkills(skillsToRender) {
 
     skillsContainer.innerHTML = "";
 
-    if (skillsToRender.length === 0) {
+    if (!skillsToRender || skillsToRender.length === 0) {
         skillsContainer.innerHTML = `
             <div class="col-12 text-center py-4">
                 <p class="text-muted">No skills found in this category.</p>
@@ -274,14 +266,20 @@ function renderSkills(skillsToRender) {
     }
 
     skillsToRender.forEach(skill => {
+        const isLearning = skill.level && skill.level.toLowerCase().includes("learning");
+        const badgeHTML = skill.level
+            ? `<span class="skill-level-badge ${isLearning ? 'learning' : ''}">${escapeHTML(skill.level)}</span>`
+            : '';
+
         const cardHTML = `
             <div class="col-6 col-md-4 col-lg-3 reveal">
                 <div class="skill-card">
                     <div class="skill-card-icon ${skill.color}">
                         <i class="${skill.icon}"></i>
                     </div>
-                    <h3 class="skill-card-title">${skill.name}</h3>
-                    <span class="skill-card-category">${skill.category}</span>
+                    <h3 class="skill-card-title">${escapeHTML(skill.name)}</h3>
+                    <span class="skill-card-category">${escapeHTML(skill.category)}</span>
+                    ${badgeHTML}
                 </div>
             </div>
         `;

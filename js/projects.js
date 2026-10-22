@@ -1,6 +1,7 @@
 /**
  * PROJECTS.JS - ANAND KUMAR PORTFOLIO
- * Dynamic Project Card Rendering, Filtering, and Modal Details Engine
+ * Dynamic Project Card Rendering, Category Filtering, and Modal Details Engine
+ * Specialization: Java Spring Boot Backend Developer
  */
 
 /**
@@ -72,15 +73,39 @@ function renderProjects(projectList) {
             });
         }
 
+        // Code action button: real link or disabled state
+        const hasGithub = project.github && project.github !== "#";
+        const githubBtnHTML = hasGithub
+            ? `<a href="${escapeHTML(project.github)}" target="_blank" rel="noopener noreferrer" class="btn btn-project-action btn-project-outline" aria-label="View ${escapeHTML(project.title)} on GitHub">
+                    <i class="bi bi-github"></i>
+                    <span>Code</span>
+               </a>`
+            : `<button type="button" class="btn btn-project-action btn-project-disabled" disabled title="Source code is in a private repository" aria-label="Source code is private">
+                    <i class="bi bi-lock-fill"></i>
+                    <span>Private</span>
+               </button>`;
+
+        // Demo action button: real link or unavailable indicator
+        const hasDemo = project.demo && project.demo !== "#";
+        const demoBtnHTML = hasDemo
+            ? `<a href="${escapeHTML(project.demo)}" target="_blank" rel="noopener noreferrer" class="btn btn-project-action btn-project-primary" aria-label="View ${escapeHTML(project.title)} Live Demo">
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    <span>Demo</span>
+               </a>`
+            : `<button type="button" class="btn btn-project-action btn-project-disabled" disabled title="Live demo available on request / local environment" aria-label="Demo available on request">
+                    <i class="bi bi-clock-history"></i>
+                    <span>On Request</span>
+               </button>`;
+
         const projectCardHTML = `
-            <div class="col-12 col-md-6 col-lg-4 reveal">
+            <div class="col-12 col-md-6 col-lg-6 reveal">
                 <div class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="${project.image}" 
-                             alt="${escapeHTML(project.title)} Preview" 
+                        <img src="${escapeHTML(project.image)}" 
+                             alt="${escapeHTML(project.title)} Architecture Preview" 
                              class="project-image" 
                              loading="lazy" 
-                             onerror="this.onerror=null; this.src='https://placehold.co/800x500/1f2937/3b82f6?text=${encodeURIComponent(project.title)}';">
+                             onerror="this.onerror=null; this.src='assets/images/projects/hirehub-preview.svg';">
                         <span class="project-category-badge">${escapeHTML(project.category)}</span>
                     </div>
 
@@ -93,25 +118,19 @@ function renderProjects(projectList) {
                             ${techBadgesHTML}
                         </div>
 
-                        <div class="project-actions flex-wrap gap-2">
+                        <div class="project-actions flex-wrap gap-2 pt-2">
                             <button type="button" 
                                     class="btn btn-project-action btn-project-outline btn-details-trigger w-100 mb-2" 
-                                    data-project-id="${project.id}" 
+                                    data-project-id="${escapeHTML(project.id)}" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#projectDetailsModal" 
-                                    aria-label="View Details for ${escapeHTML(project.title)}">
-                                <i class="bi bi-eye-fill me-1"></i>
-                                <span>View Details</span>
+                                    aria-label="View full architectural details for ${escapeHTML(project.title)}">
+                                <i class="bi bi-diagram-3-fill me-1"></i>
+                                <span>View System Details</span>
                             </button>
 
-                            <a href="${project.github}" target="_blank" rel="noopener noreferrer" class="btn btn-project-action btn-project-outline" aria-label="View ${escapeHTML(project.title)} Code on GitHub">
-                                <i class="bi bi-github"></i>
-                                <span>Code</span>
-                            </a>
-                            <a href="${project.demo}" target="_blank" rel="noopener noreferrer" class="btn btn-project-action btn-project-primary" aria-label="View ${escapeHTML(project.title)} Live Demo">
-                                <i class="bi bi-box-arrow-up-right"></i>
-                                <span>Demo</span>
-                            </a>
+                            ${githubBtnHTML}
+                            ${demoBtnHTML}
                         </div>
                     </div>
                 </div>
@@ -131,15 +150,13 @@ function renderProjects(projectList) {
  * @param {String} projectId - Unique string ID of project
  */
 function openProjectDetailsModal(projectId) {
-    // Search array for project object with matching ID using Array.prototype.find()
     const project = projectsData.find(p => p.id === projectId);
-
     if (!project) return;
 
-    // Safely update modal text elements using textContent
     const titleEl = document.getElementById("modalProjectTitle");
     const categoryEl = document.getElementById("modalProjectCategory");
     const descriptionEl = document.getElementById("modalProjectLongDescription");
+    const highlightsWrapperEl = document.getElementById("modalProjectHighlights");
     const imageEl = document.getElementById("modalProjectImage");
     const techWrapperEl = document.getElementById("modalProjectTechBadges");
     const githubEl = document.getElementById("modalProjectGithub");
@@ -151,11 +168,27 @@ function openProjectDetailsModal(projectId) {
 
     if (imageEl) {
         imageEl.src = project.image;
-        imageEl.alt = `${project.title} Detailed Screenshot`;
+        imageEl.alt = `${project.title} Detailed Architecture Screenshot`;
         imageEl.onerror = function () {
             this.onerror = null;
-            this.src = `https://placehold.co/800x500/1f2937/3b82f6?text=${encodeURIComponent(project.title)}`;
+            this.src = "assets/images/projects/hirehub-preview.svg";
         };
+    }
+
+    // Populate Key Architectural Highlights if available
+    if (highlightsWrapperEl) {
+        if (project.highlights && Array.isArray(project.highlights) && project.highlights.length > 0) {
+            let highlightsHTML = `<h4 class="h6 text-white mb-2 font-semibold"><i class="bi bi-check2-circle text-primary me-2"></i>Key Architectural Features</h4><ul class="modal-highlights-list mb-4">`;
+            project.highlights.forEach(h => {
+                highlightsHTML += `<li>${escapeHTML(h)}</li>`;
+            });
+            highlightsHTML += `</ul>`;
+            highlightsWrapperEl.innerHTML = highlightsHTML;
+            highlightsWrapperEl.classList.remove("d-none");
+        } else {
+            highlightsWrapperEl.innerHTML = "";
+            highlightsWrapperEl.classList.add("d-none");
+        }
     }
 
     if (techWrapperEl && project.technologies) {
@@ -165,8 +198,37 @@ function openProjectDetailsModal(projectId) {
         });
     }
 
-    if (githubEl) githubEl.href = project.github || "#";
-    if (demoEl) demoEl.href = project.demo || "#";
+    // Modal GitHub Action Button
+    if (githubEl) {
+        const hasGithub = project.github && project.github !== "#";
+        if (hasGithub) {
+            githubEl.href = project.github;
+            githubEl.classList.remove("disabled");
+            githubEl.removeAttribute("aria-disabled");
+            githubEl.innerHTML = `<i class="bi bi-github"></i><span>View on GitHub</span>`;
+        } else {
+            githubEl.removeAttribute("href");
+            githubEl.classList.add("disabled");
+            githubEl.setAttribute("aria-disabled", "true");
+            githubEl.innerHTML = `<i class="bi bi-lock-fill"></i><span>Private Repository</span>`;
+        }
+    }
+
+    // Modal Demo Action Button
+    if (demoEl) {
+        const hasDemo = project.demo && project.demo !== "#";
+        if (hasDemo) {
+            demoEl.href = project.demo;
+            demoEl.classList.remove("disabled");
+            demoEl.removeAttribute("aria-disabled");
+            demoEl.innerHTML = `<i class="bi bi-box-arrow-up-right"></i><span>Live Demo</span>`;
+        } else {
+            demoEl.removeAttribute("href");
+            demoEl.classList.add("disabled");
+            demoEl.setAttribute("aria-disabled", "true");
+            demoEl.innerHTML = `<i class="bi bi-clock-history"></i><span>Demo on Request</span>`;
+        }
+    }
 }
 
 /**
@@ -178,7 +240,7 @@ function filterProjectsByCategory(category) {
         renderProjects(projectsData);
     } else {
         const filtered = projectsData.filter(project => {
-            return project.category === category || project.technologies.includes(category);
+            return project.category.includes(category) || project.technologies.includes(category);
         });
         renderProjects(filtered);
     }
