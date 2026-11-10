@@ -205,21 +205,37 @@ function initTypingAnimation() {
     typeEffect();
 }
 
+
 function initMobileNavbarAutoClose() {
-    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
     const navbarCollapse = document.getElementById("navbarContent");
 
-    if (navbarCollapse && navLinks) {
-        navLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                if (navbarCollapse.classList.contains("show")) {
-                    const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse) || new bootstrap.Collapse(navbarCollapse);
-                    bsCollapse.hide();
-                }
-            });
+    if (!navbarCollapse) return;
+
+    // Navigation links, Resume and Theme Toggle
+    const navClickables = document.querySelectorAll(
+        "#navbarContent .nav-link, #navbarContent .btn-resume, #navbarContent #theme-toggle"
+    );
+
+    navClickables.forEach(item => {
+        item.addEventListener("click", () => {
+
+            // Only collapse when mobile menu is currently open
+            if (
+                navbarCollapse.classList.contains("show") &&
+                window.innerWidth < 992
+            ) {
+                const bsCollapse =
+                    bootstrap.Collapse.getInstance(navbarCollapse) ||
+                    new bootstrap.Collapse(navbarCollapse, {
+                        toggle: false
+                    });
+
+                bsCollapse.hide();
+            }
         });
-    }
+    });
 }
+
 
 /* ==========================================================================
    5. DYNAMIC SKILLS RENDERING & FILTERING ENGINE
